@@ -1,5 +1,5 @@
 import sqlite3 as sq
-import os, copy, types, pickle, random, json, abc, sys#, weakref
+import os, copy, pickle, random, json, abc, sys#, weakref
 from collections import MutableSequence
 
 from rabaDB.rabaSetup import RabaConnection, RabaConfiguration
@@ -31,7 +31,7 @@ def isRabaObjectPupa(v) :
 	return _recClassCheck(v.__class__, RabaPupa)
 
 def isPythonPrimitive(v) :
-	primTypes = [types.IntType, types.LongType, types.FloatType, types.StringType, types.UnicodeType, types.BufferType, types.NoneType]
+	primTypes = [int, float, str, type(None)]  # NOTE/TODO removed unicode, buffer?
 	for t in primTypes :
 		if isinstance(v, t) :
 			return True
@@ -179,7 +179,7 @@ class _RabaSingleton_MetaClass(type) :
 			uniqueStr = ''
 			if '_raba_uniques' in dct :
 				for c in dct['_raba_uniques'] :
-					if type(c) is types.StringType :
+					if type(c) is str :
 						uniqueStr += 'UNIQUE (%s) ON CONFLICT REPLACE, ' % c
 					elif len(c) == 1 :
 						uniqueStr += 'UNIQUE (%s) ON CONFLICT REPLACE, ' % c[0]
@@ -480,7 +480,7 @@ class Raba(object):
 		ff = []
 		rlf = []
 		tmpf = []
-		if type(fields) is types.StringType :
+		if type(fields) is str :
 			tmpf.append(fields)
 		else :
 			tmpf = fields

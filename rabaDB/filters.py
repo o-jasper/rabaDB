@@ -1,4 +1,4 @@
-import re, types
+import re
 
 import rabaSetup as stp
 from Raba import *
@@ -52,7 +52,7 @@ class RabaQuery :
 		"""rabaClass can either be a raba class of a string of a raba class name. In the latter case you must provide the namespace argument.
 		If it's a Raba Class the argument is ignored. If you fear cicular imports use strings"""
 
-		if type(rabaClass) is types.StringType :
+		if type(rabaClass) is str :
 			self._raba_namespace = namespace
 			self.con = stp.RabaConnection(self._raba_namespace)
 			self.rabaClass = self.con.getClass(rabaClass)
@@ -78,7 +78,7 @@ class RabaQuery :
 
 		dstF = {}
 		if len(lstFilters) > 0 :
-			if type(lstFilters[0]) is types.DictType :
+			if type(lstFilters[0]) is dict :
 				dstF = lstFilters[0]
 				lstFilters = lstFilters[1:]
 
@@ -160,7 +160,7 @@ class RabaQuery :
 		for f in self.filters :
 			filt = []
 			for k, vv in f.iteritems() :
-				if type(vv) is types.ListType or type(vv) is types.TupleType :
+				if type(vv) in { list, tuple } :
 					sqlValues.extend(vv)
 					kk = 'OR %s ? '%k * len(vv)
 					kk = "(%s)" % kk[3:]

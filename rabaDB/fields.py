@@ -1,4 +1,3 @@
-import types
 import rabaDB.Raba
 
 RABA_FIELD_TYPE_IS_UNDEFINED = -1
@@ -65,7 +64,8 @@ class RabaObject(RabaField) :
 			raise ValueError("Default value is not a valid Raba Object")
 
 		RabaField.__init__(self,  default, constrainFct, **constrainFctWArgs)
-		if type(className) is not types.StringType :
+		if type(className) is not str :
+
 			assert isRabaClass(className)
 			self.className = RabaConnection(className._raba_namespace).getClass(className.__name__)
 			self.classNamespace = className._raba_namespace
@@ -98,4 +98,3 @@ def isRabaObjectField(v) :
 
 def isRabaListField(v) :
 	return hasattr(v.__class__, '_raba_type') and v.__class__._raba_type == RABA_FIELD_TYPE_IS_RABA_LIST
-

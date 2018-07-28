@@ -1,4 +1,4 @@
-import time, types, hashlib, sys
+import time, hashlib, sys
 import sqlite3 as sq
 
 #The limit number of variables in a query in sqlite (http://www.sqlite.org/limits.html). Same name as in sqlite if want to google it
@@ -104,7 +104,7 @@ class RabaConnection(object) :
 			typ = "INDEX"
 			w = ''
 
-		if type(fields) is types.ListType :
+		if type(fields) is list :
 			return "RABA_%s_%s_%s_on_%s" %(table, typ, w, '_X_'.join(fields))
 		else :
 			return "RABA_%s_%s_%s_on_%s" %(table, typ, w, fields)
@@ -126,7 +126,7 @@ class RabaConnection(object) :
 		else :
 			indexTable = self.makeIndexTableName(table, fields, where, whereValues)
 
-		if type(fields) is types.ListType :
+		if type(fields) is list :
 			sql = "CREATE INDEX IF NOT EXISTS %s on %s(%s)" %(indexTable, table, ', '.join(fields))
 		else :
 			sql = "CREATE INDEX IF NOT EXISTS %s on %s(%s)" %(indexTable, table, fields)
