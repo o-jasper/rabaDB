@@ -1,9 +1,9 @@
 import sqlite3 as sq
-import os, copy, types, cPickle, random, json, abc, sys#, weakref
+import os, copy, types, pickle, random, json, abc, sys#, weakref
 from collections import MutableSequence
 
-from rabaSetup import RabaConnection, RabaConfiguration
-import fields as RabaFields
+from rabaDB.rabaSetup import RabaConnection, RabaConfiguration
+import rabaDB.fields as RabaFields
 
 def _recClassCheck(v, cls) :
 	if v is cls : return True
@@ -418,7 +418,7 @@ class Raba(object):
 			elmt = getattr(self._rabaClass, k)
 			if RabaFields.isPrimitiveField(elmt) :
 				try :
-					self.__setattr__(k, cPickle.loads(str(dbLine[i])))
+					self.__setattr__(k, pickle.loads(str(dbLine[i])))
 				except :
 					self.__setattr__(k, dbLine[i])
 
@@ -620,7 +620,7 @@ class Raba(object):
 				elif isPythonPrimitive(vv):
 					vSQL = vv
 				else :
-					vSQL = buffer(cPickle.dumps(vv))
+					vSQL = buffer(pickle.dumps(vv))
 
 				self.sqlSave[k] = vSQL
 
@@ -885,7 +885,7 @@ class RabaList(MutableSequence) :
 					elif isPythonPrimitive(e) :
 						values.append((self.anchorObj.raba_id, e, RabaFields.RABA_FIELD_TYPE_IS_PRIMITIVE, None, None, None))
 					else :
-						values.append((self.anchorObj.raba_id, buffer(cPickle.dumps(e)), RabaFields.RABA_FIELD_TYPE_IS_PRIMITIVE, None, None, None))
+						values.append((self.anchorObj.raba_id, buffer(pickle.dumps(e)), RabaFields.RABA_FIELD_TYPE_IS_PRIMITIVE, None, None, None))
 
 				self.connection.executeMany('INSERT INTO %s (anchor_raba_id, value, type, obj_raba_class_name, obj_raba_id, obj_raba_namespace) VALUES (?, ?, ?, ?, ?, ?)' % self.tableName, values)
 

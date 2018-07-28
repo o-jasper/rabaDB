@@ -34,7 +34,7 @@ class RabaConfiguration(object) :
 		if dbFile == None :
 			raise ValueError("""No configuration detected for namespace '%s'.
 			Have you forgotten to add: %s('%s', 'the path to you db file') just after the import of setup?""" % (namespace, self.__class__.__name__, namespace))
-		#print dbFile
+		#print(dbFile)
 		self.dbFile = dbFile
 
 class RabaConnection(object) :
@@ -204,14 +204,14 @@ class RabaConnection(object) :
 
 	def _debugActions(self, sql, values) :
 		if self._debugSQL :
-			print "Next query: %s\nWith params: %s\n(c)ontinue/(s)top:" % (sql, values)
+			print("Next query: %s\nWith params: %s\n(c)ontinue/(s)top:" % (sql, values))
 			while True :
 				val = raw_input().lower()
 				if val == 's' :
 					raise Exception("DEBUG STOPED!")
 				elif val == 'c' :
 					break
-		elif self._printQueries : print sql, values
+		elif self._printQueries : print(sql, values)
 
 		if self._enableStats :
 			self._logQuery(sql, values)
@@ -236,25 +236,25 @@ class RabaConnection(object) :
 	def printStats(self) :
 		if self._enableStats :
 			t = time.time() - self.startTime
-			print "====Raba Connection %s stats====" % (self.namespace)
+			print("====Raba Connection %s stats====" % (self.namespace))
 			if t < 60 :
-				print "Been running for: %fsc" % t
+				print("Been running for: %fsc" % t)
 			elif t < 3600 :
-				print "Been running for: %fmin" % (t/60)
+				print("Been running for: %fmin" % (t/60))
 			else :
-				print "Been running for: %fh" % (t/3600)
+				print("Been running for: %fh" % (t/3600))
 
-			print 'Query counts: '
+			print('Query counts: ')
 			for k, v in self.queryCounts.iteritems() :
-				print '\t', k
-				print "\t\t raw counts:", v
+				print('\t', k)
+				print("\t\t raw counts:", v)
 				if self.queryCounts['TOTAL'] > 0 :
-					print "\t\t ratio (total queries):", v/float(self.queryCounts['TOTAL'])
+					print("\t\t ratio (total queries):", v/float(self.queryCounts['TOTAL']))
 				else :
-					print "\t\t ratio (total queries): 0/0"
-				print "\t\t ratio (run time (sc)):", v/t
+					print("\t\t ratio (total queries): 0/0")
+				print("\t\t ratio (run time (sc)):", v/t)
 		else :
-			print "====Raba Connection %s stats====> you must enable stats first" % (self.namespace)
+			print("====Raba Connection %s stats====> you must enable stats first" % (self.namespace))
 
 	def beginTransaction(self) :
 		"Raba commits at each save, unless you begin a transaction in wich cas everything will be commited when endTransaction() is called"
