@@ -1,8 +1,8 @@
 import re
 
-import rabaSetup as stp
-from Raba import *
-import fields as RabaFields
+import rabaDB.rabaSetup as stp
+from rabaDB.Raba import *
+import rabaDB.fields as RabaFields
 
 #####
 # TODO
@@ -156,7 +156,7 @@ class RabaQuery :
 		"Returns the query without performing it. If count, the query returned will be a SELECT COUNT() instead of a SELECT"
 		sqlFilters = []
 		sqlValues = []
-		# print self.filters
+		# print(self.filters)
 		for f in self.filters :
 			filt = []
 			for k, vv in f.iteritems() :
@@ -288,4 +288,4 @@ if __name__ == '__main__' :
 	rq.addFilter({'b->c' : c})
 	#rq.addFilter(['b->c.name = C'])
 	for a in rq.run() :
-		print a
+		print(a)
