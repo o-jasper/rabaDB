@@ -8,6 +8,7 @@ class RabaNameSpaceSingleton(type):
 	_instances = {}
 
 	def __call__(cls, *args, **kwargs):
+		print(*args, kwargs)
 		if len(args) < 1 :
 			raise ValueError('The first argument to %s must be a namespace' % cls.__name__)
 
@@ -21,27 +22,25 @@ class RabaNameSpaceSingleton(type):
 			cls._instances[key] = type.__call__(cls, *args, **kwargs)
 		return cls._instances[key]
 
-class RabaConfiguration(object) :
+class RabaConfiguration(metaclass=RabaNameSpaceSingleton) :
 	"""This class must be instanciated at the begining of the script just after the import of setup giving it the path to the the DB file. ex :
 
 	from rabaDB.setup import *
 	RabaConfiguration(namespace, './dbTest.db')
 
 	After the first instanciation you can call it without parameters. As this class is a Singleton, it will always return the same instance"""
-	__metaclass__ = RabaNameSpaceSingleton
 
 	def __init__(self, namespace, dbFile = None) :
 		if dbFile == None :
 			raise ValueError("""No configuration detected for namespace '%s'.
-			Have you forgotten to add: %s('%s', 'the path to you db file') just after the import of setup?""" % (namespace, self.__class__.__name__, namespace))
+			Have you forgotten to add: %s('%s', 'the path to you db file') just after the import of setup?\n(%s""" % (namespace, self.__class__.__name__, namespace,
+                                                                                                                                  (dbFile, self)))
 		#print(dbFile)
 		self.dbFile = dbFile
 
-class RabaConnection(object) :
+class RabaConnection(metaclass=RabaNameSpaceSingleton) :
 	"""A class that manages the connection to the sqlite3 database. Don't be afraid to call RabaConnection() as much as you want. By default Raba tries to be smart and commits only when
 	you save a rabaobject but if you want complete controle over the commit process you can use setAutoCommit(False) and then use commit() manually"""
-
-	__metaclass__ = RabaNameSpaceSingleton
 
 	def __init__(self, namespace) :
 

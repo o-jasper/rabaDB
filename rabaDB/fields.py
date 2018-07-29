@@ -1,4 +1,4 @@
-import rabaDB.Raba
+import rabaDB.Raba as Raba
 
 RABA_FIELD_TYPE_IS_UNDEFINED = -1
 RABA_FIELD_TYPE_IS_PRIMITIVE = 0
