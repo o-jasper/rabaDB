@@ -8,7 +8,6 @@ class RabaNameSpaceSingleton(type):
 	_instances = {}
 
 	def __call__(cls, *args, **kwargs):
-		print(*args, kwargs)
 		if len(args) < 1 :
 			raise ValueError('The first argument to %s must be a namespace' % cls.__name__)
 
@@ -220,7 +219,7 @@ class RabaConnection(metaclass=RabaNameSpaceSingleton) :
 		sql = sql.strip()
 		self._debugActions(sql, values)
 		cur = self.connection.cursor()
-		cur.execute(sql, values)
+		cur.execute(sql, tuple(values))  # Note dict-values won't work.
 		return cur
 
 	def executemany(self, sql, values = [()]) :

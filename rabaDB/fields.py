@@ -1,4 +1,4 @@
-import rabaDB.Raba as Raba
+#import rabaDB.Raba as Raba
 
 RABA_FIELD_TYPE_IS_UNDEFINED = -1
 RABA_FIELD_TYPE_IS_PRIMITIVE = 0
@@ -38,8 +38,8 @@ class Relation(RList) :
 		self.className = className
 		RList.__init__(self, ElmtConstrainFct, **ElmtConstrainFctWArgs)
 
-	def check(self, val) :
-		return Raba.isRabaObject(val) and ((self.className != None and val._rabaClass.__name__ == self.className) or self.className == None) and RList.check(self, val)
+#	def check(self, val) :
+#		return Raba.isRabaObject(val) and ((self.className != None and val._rabaClass.__name__ == self.className) or self.className == None) and RList.check(self, val)
 
 class Primitive(RabaField) :
 	_raba_type = RABA_FIELD_TYPE_IS_PRIMITIVE
@@ -73,15 +73,15 @@ class RabaObject(RabaField) :
 			self.className = className
 			self.classNamespace = classNamespace
 
-	def check(self, val) :
-		if val == self.default and self.default == None :
-			return True
-		retVal =  Raba.isRabaObject(val) and ((self.className != None and val._rabaClass.__name__ == self.className) or self.className == None) and RabaField.check(self, val)
-
-		if self.classNamespace == None :
-			return retVal
-		else :
-			return retVal and val._raba_namespace == self.classNamespace
+#	def check(self, val) :
+#		if val == self.default and self.default == None :
+#			return True
+#		retVal =  Raba.isRabaObject(val) and ((self.className != None and val._rabaClass.__name__ == self.className) or self.className == None) and RabaField.check(self, val)
+#
+#		if self.classNamespace == None :
+#			return retVal
+#		else :
+#			return retVal and val._raba_namespace == self.classNamespace
 
 	def __repr__(self) :
 		return '<field %s, class: %s , default: %s>' % (self.__class__.__name__, self.className, self.default)
